@@ -55,339 +55,1038 @@
      <link rel="icon" href="target.gif">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
      <link rel="stylesheet" href="style.css">
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    /* ----- home page styles ----- */
+    .hero {
+      padding-top: 120px;
+      background: linear-gradient(135deg,
+          var(--light-color) 0%,
+          var(--background-color) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5px;
+      align-items: center;
+    }
+
+    @media (min-width: 992px) {
+      .hero-content {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .hero-text h1 {
+      margin-bottom: 10px;
+    }
+
+    .hero-text h3 {
+      color: var(--primary-color);
+      font-weight: 500;
+      margin-bottom: 7px;
+      min-height: 60px;
+      display: flexbox;
+      align-items: center;
+    }
+
+    .typing-container {
+      display: inline;
+    }
+
+    .typing-text {
+      color: var(--secondary-color);
+      font-weight: 600;
+      border-right: 3px solid var(--primary-color);
+      padding-right: 5px;
+      animation: blink 0.7s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        border-color: var(--primary-color);
+      }
+
+      50% {
+        border-color: transparent;
+      }
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .hero-image {
+      text-align: center;
+      animation: morphing 10s ease-in-out infinite;
+    }
+
+    .profile-image-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      border-radius: 50%;
+      overflow: visible;
+      box-shadow: var(--light-color);
+      animation: morphing 10s ease-in-out infinite;
+    }
+
+    .profile-image {
+      width: 95%;
+      height: auto;
+      display: block;
+      border-radius: 47.5%;
+      float: right;
+    }
+
+    .image-fallback {
+      height: 400px;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 5rem;
+    }
+
+    .quick-links {
+      padding: 80px 0;
+      background-color: var(--card-bg);
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .link-card {
+      background-color: var(--light-color);
+      padding: 40px 30px;
+      border-radius: 15px;
+      text-align: center;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    .link-card:hover {
+      transform: translateY(-10px);
+      background-color: aqua;
+        box-shadow: var(--shadow);
+    }
+
+    .link-card:hover * {
+      color: white;
+    }
+
+    .link-icon {
+      font-size: 3rem;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      transition: var(--transition);
+    }
+
+    .link-card h3 {
+      margin-bottom: 15px;
+    }
+
+    .link-card p {
+      margin-bottom: 0;
+    }
+
+    /* ----- about page styles ----- */
+    /* Simplified hero sections */
+   .about-hero,
+   .education-hero,
+   .projects-hero,
+   .contact-hero {
+     padding: 60px 0 30px;  /* Reduced padding */
+     background: none;       /* No gradient */
+     color: inherit;         /* Use default text color */
+     text-align: center;
+   }
+
+   .about-hero h1,
+   .education-hero h1,
+   .projects-hero h1,
+    .contact-hero h1 {
+      color: var(--dark-color); /* or your preferred heading color */
+      margin-bottom: 15px;
+    }
+
+   .about-hero p,
+   .education-hero p,
+   .projects-hero p,
+   .contact-hero p {
+      color: var(--text-color);
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+    }
+    
+    .about-content {
+      padding: 80px 0;
+      background-color: var(--background-color);
+    }
+    
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+    
+    @media (min-width: 992px) {
+      .about-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    
+    .about-text {
+      background-color: var(--card-bg);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+    }
+    
+    .skills-section {
+      background-color: var(--card-bg);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+    }
+    
+    .skills-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    .skill-item {
+      background-color: var(--light-color);
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 4px solid var(--primary-color);
+      transition: var(--transition);
+    }
+    
+    .skill-item:hover {
+      transform: translateX(10px);
+      box-shadow: var(--shadow);
+    }
+    
+    .skill-item i {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .learning-section {
+      padding: 80px 0;
+      background-color: var(--card-bg);
+    }
+    
+    .learning-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    
+    .learning-card {
+      background-color: var(--light-color);
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      transition: var(--transition);
+    }
+    
+    .learning-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow);
+    }
+    
+    .learning-icon {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+
+    /* ----- education page styles ----- */
+    .education-content {
+      padding: 80px 0;
+      background-color: var(--background-color);
+    }
+    
+    .education-timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .timeline-item {
+      position: relative;
+      margin-bottom: 30px;
+      width: 100%;
+    }
+    
+    .timeline-item:nth-child(odd) .timeline-content {
+      margin-left: auto;
+      text-align: right;
+      padding-right: 70px;
+    }
+    
+    .timeline-item:nth-child(even) .timeline-content {
+      padding-left: 70px;
+    }
+    
+    .timeline-icon {
+      display: none;
+      
+    }
+    
+    .timeline-content {
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      margin: 0;
+      text-align: left;
+    }
+    .timeline-content:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow);
+    }
+    
+    .timeline-content h3 {
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+    
+    .timeline-date {
+      color: var(--secondary-color);
+      font-weight: 600;
+      margin-bottom: 15px;
+      display: block;
+    }
+    
+     @media (max-width: 768px) {
+      .education-timeline:before {
+        left: 30px;
+      }
+      
+      .timeline-item:nth-child(odd) .timeline-content,
+      .timeline-item:nth-child(even) .timeline-content {
+        width: calc(100% - 80px);
+        margin-left: 80px;
+        padding-left: 30px;
+        text-align: left;
+      }
+      
+      .timeline-icon {
+        left: 30px;
+      }
+    }
+    
+    .goals-section {
+      padding: 80px 0;
+      background-color: var(--card-bg);
+    }
+    
+   .goals-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);  /* Four equal columns */
+      gap: 30px;
+    }
+
+   @media (max-width: 1200px) {
+    .goals-grid {
+      grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens */
+     }
+    }
+
+   @media (max-width: 768px) {
+    .goals-grid {
+      grid-template-columns: 1fr;            /* One column on mobile */
+     }
+    }
+    
+    .goal-card {
+      background-color: var(--light-color);
+      padding: 30px;
+      border-radius: 15px;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .goal-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow);
+      background-color: aqua;
+    }
+    
+    .goal-icon {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+    
+    .goal-card h3 {
+      margin-bottom: 15px;
+    }
+
+    .goal-card p {
+     flex: 1;                /* Push content to bottom if needed */
+    }
+    
+    .projects-content {
+      padding: 80px 0;
+      background-color: var(--background-color);
+    }
+    
+   .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);  /* Four equal columns */
+      gap: 30px;
+    }
+
+    @media (max-width: 1200px) {
+     .projects-grid {
+       grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens */
+     }
+    }
+
+    @media (max-width: 768px) {
+     .projects-grid {
+       grid-template-columns: 1fr;            /* One column on mobile */
+     }
+    }
+    
+    .project-card {
+      background-color: var(--card-bg);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      height: 100%;   
+    }
+    
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .project-img {
+      height: 200px;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 3rem;
+    }
+    
+    .project-info {
+      padding: 30px;
+      flex: 1;                 /* Pushes button to bottom */
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .project-info h3 {
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+    
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 20px 0;
+    }
+    
+    .tag {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-top: 20px;
+    }
+    
+    .project-info .project-link {
+      margin-top: auto;         /* Align link at bottom */
+    }
+    .project-link:hover {
+      color: var(--secondary-color);
+      gap: 12px;
+    }
+    
+    .coming-soon {
+      padding: 80px 0;
+      background-color: var(--card-bg);
+    }
+    
+    .coming-soon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    
+    .coming-card {
+      background-color: var(--light-color);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      transition: var(--transition);
+    }
+    
+    .coming-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+    
+    .coming-icon {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+    
+    .contact-content {
+      padding: 80px 0;
+      background-color: var(--background-color);
+    }
+    
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+    
+    @media (min-width: 992px) {
+      .contact-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    
+    .contact-item:hover {
+      transform: translateX(10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .contact-icon {
+      width: 60px;
+      height: 60px;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    
+    .contact-details h3 {
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+    
+    .contact-form {
+      background-color: var(--card-bg);
+      padding: 50px;
+      border-radius: 50px;
+      box-shadow: var(--shadow);
+      margin: 50px ;
+      position: relative;
+      top: 50px;
+      max-width: 600px;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--dark-color);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--gray-color);
+      border-radius: 15px;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      background-color: var(--light-color);
+      color: var(--text-color);
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(26, 95, 180, 0.2);
+    }
+    
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .map-section {
+      padding: 80px 0;
+      background-color: var(--card-bg);
+    }
+
+    .map-container {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;        /* Match iframe's original max-width */
+      margin: 0 auto;           /* Center the container */
+      border-radius: 30px;
+      overflow: hidden;         /* Ensures border-radius clips the iframe */
+      box-shadow: var(--shadow);
+      background: #f0f0f0;      /* Fallback background while loading */
+    }
+
+    .map-container iframe {
+      display: block;
+     width: 100%;
+      height: auto;
+     aspect-ratio: 1000 / 500; /* Maintains 1000:500 ratio */
+     border: 0;
+    }
+
+/* Fallback for older browsers that don't support aspect-ratio */
+@supports not (aspect-ratio: 1/1) {
+  .map-container {
+    padding-bottom: 50%;     /* 500/1000 = 0.5 → 50% */
+    height: 0;
+  }
+  .map-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+    /* general anchor offset */
+    section[id] {
+      scroll-margin-top: 80px;
+    }
+  </style>
 </head>
 <body>
-    <!-- Dark/Light Mode Toggle -->
-    <div class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon"></i>
-        <i class="fas fa-sun"></i>
+  <!-- Loading Screen (from home) -->
+  <div id="loadingScreen" class="fixed inset-0 bg-white dark:bg-gray-900 z-[9999] flex items-center justify-center transition-opacity duration-500">
+    <div class="text-center">
+      <div class="loader mb-4"></div>
+      <p class="text-gray-600 dark:text-gray-400" style="align-items: center;">Loading Portfolio...</p>
+    </div>
+  </div>
+
+  <div class="theme-toggle" id="themeToggle">
+    <i class="fas fa-moon"></i>
+    <i class="fas fa-sun"></i>
+  </div>
+
+  <header>
+    <div class="navbar">
+      <a href="#home" class="logo">NSHUTI<span>.</span></a>
+
+      <div class="nav-center">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-right"></div>
+
+      <div class="hamburger" id="hamburger">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- HOME section (full content from index.html) -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>NSHUTI Emmanuel</h1>
+          <h3>IT Student & Aspiring <span class="typing-container"><span id="typing-text"></span></span></h3>
+          <p>
+            I am a passionate IT student at King David Academy with expertise
+            in programming languages like C++ and C, web development with
+            HTML, CSS, JavaScript, and cybersecurity. Based in Rubavu, Rwanda,
+            I'm dedicated to becoming a skilled software developer and ethical
+            hacker.
+          </p>
+          <p>
+            My journey in technology started with curiosity about how software
+            works, and now I'm pursuing it seriously to solve real-world
+            problems through secure and efficient software solutions.
+          </p>
+          <div class="hero-btns">
+            <a href="#projects" class="btn">View My Work</a>
+            <a href="#contact" class="btn btn-secondary">Contact Me</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <div class="profile-image-container">
+            <img src="Nshuti8.png.jpg" alt="NSHUTI Emmanuel pic" class="profile-image"
+              onerror=" this.style.display = 'none';this.nextElementSibling.style.display = 'flex';">
+            <div class="image-fallback" style="display: none">
+              <i class="fas fa-user"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- quick links (from home) -->
+  <section class="quick-links">
+    <div class="container">
+      <h2>Explore My Portfolio</h2>
+      <div class="links-grid">
+        <a href="#about" class="link-card">
+          <div class="link-icon"><i class="fas fa-user"></i></div>
+          <h3>About Me</h3>
+          <p>Learn about my skills, background, and what drives me in technology</p>
+        </a>
+        <a href="#education" class="link-card">
+          <div class="link-icon"><i class="fas fa-graduation-cap"></i></div>
+          <h3>Education</h3>
+          <p>See my academic journey and career goals at King David Academy</p>
+        </a>
+        <a href="#projects" class="link-card">
+          <div class="link-icon"><i class="fas fa-code"></i></div>
+          <h3>Projects</h3>
+          <p>View my programming projects and web development work</p>
+        </a>
+        <a href="#contact" class="link-card">
+          <div class="link-icon"><i class="fas fa-envelope"></i></div>
+          <h3>Contact</h3>
+          <p>Get in touch with me for opportunities or collaboration</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT section (full from about.html) -->
+  <section id="about">
+    <div class="about-hero">
+      <div class="container">
+        <h1>About Me</h1>
+        <p>Get to know my journey, skills, and passion for technology and software development</p>
+      </div>
     </div>
 
-    <!-- Header & Navigation -->
-    <header>
-        <div class="container">
-            <nav class="navbar">
-                <a href="#" class="logo">NSHUTI<span>.</span></a>
-                <div class="hamburger" id="hamburger">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="#home" class="active">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#education">Education</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+    <div class="about-content">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-text">
+            <h2>My Story</h2>
+            <p>My name is NSHUTI Emmanuel, an IT student at King David Academy in Rwanda. My journey into technology began with a simple curiosity about how computers work and how software is created. This curiosity quickly turned into a passion that drives my daily learning and practice.</p>
+            <p>I started with basic computer skills and gradually moved to programming. My first programming language was C, which taught me the fundamentals of logic and problem-solving. From there, I expanded to C++ and discovered the world of object-oriented programming.</p>
+            <p>As I progressed, I realized the importance of web technologies and started learning HTML, CSS, and JavaScript. This opened up opportunities to create interactive and visually appealing websites. My current focus includes mastering front-end development while also exploring back-end technologies.</p>
+            <p>Beyond programming, I developed a strong interest in cybersecurity. The challenge of protecting systems and data while understanding how they can be vulnerable fascinates me. I believe ethical hacking skills are essential for any software developer in today's digital landscape.</p>
+            <p>My goal is to become a full-stack developer with cybersecurity expertise, creating secure and efficient applications that solve real-world problems.</p>
+          </div>
+          <div class="skills-section">
+            <h2>My Skills</h2>
+            <div class="skills-list">
+              <div class="skill-item"><i class="fab fa-cuttlefish"></i><h4>C Programming</h4><p>Strong foundation in C programming with experience in system programming</p></div>
+              <div class="skill-item"><i class="fab fa-cuttlefish"></i><h4>C++ Programming</h4><p>Object-oriented programming with C++, data structures and algorithms</p></div>
+              <div class="skill-item"><i class="fab fa-html5"></i><h4>HTML5</h4><p>Semantic HTML5 markup for modern web applications</p></div>
+              <div class="skill-item"><i class="fab fa-css3-alt"></i><h4>CSS3</h4><p>Styling with CSS3, Flexbox, Grid, and responsive design</p></div>
+              <div class="skill-item"><i class="fab fa-js"></i><h4>JavaScript</h4><p>Interactive web development with modern JavaScript</p></div>
+              <div class="skill-item"><i class="fas fa-shield-alt"></i><h4>Cybersecurity</h4><p>Fundamentals of network security and ethical hacking</p></div>
+            </div>
+          </div>
         </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>NSHUTI Emmanuel</h1>
-                    <h3>IT Student & Aspiring <span id="typing-text"></span><span class="cursor">|</span></h3>
-                    <p>Passionate IT student at King David Academy with expertise in programming languages like C++ and C, web development (HTML, CSS, JavaScript), and cybersecurity. Based in Rubavu, Rwanda.</p>
-                    <div class="hero-btns">
-                        <a href="#projects" class="btn">View My Work</a>
-                        <a href="#contact" class="btn btn-secondary">Contact Me</a>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <div class="profile-image-container">
-                        <img src="https://i.ibb.co/93ZK6Z1N/Nshuti8-png.jpg" alt="NSHUTI Emmanuel profile photo" class="profile-image" id="profileImage">
-                        <div class="image-fallback">
-                            <i class="fas fa-laptop-code"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>I am a dedicated IT student passionate about technology and its potential to solve real-world problems. My journey in technology began with a curiosity about how software works, which has now evolved into a serious pursuit of becoming a skilled software developer and ethical hacker.</p>
-                    <p>Currently, I'm studying at King David Academy where I'm building a strong foundation in computer science principles while specializing in programming and cybersecurity.</p>
-                    <p>My ultimate goal is to develop secure, efficient software solutions while ensuring digital safety through ethical hacking practices.</p>
-                </div>
-                <div class="skills">
-                    <h3>My Skills</h3>
-                    <div class="skills-list">
-                        <div class="skill-item">
-                            <i class="fab fa-cuttlefish"></i>
-                            <span>C/C++ Programming</span>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fab fa-html5"></i>
-                            <span>HTML5 & CSS3</span>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fab fa-js"></i>
-                            <span>JavaScript</span>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <span>Cybersecurity Fundamentals</span>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fab fa-react"></i>
-                            <span>React (Learning)</span>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fab fa-php"></i>
-                            <span>PHP (Learning)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education Section -->
-    <section class="education" id="education">
-        <div class="container">
-            <h2 class="section-title">Education & Goals</h2>
-            <div class="education-item">
-                <h3>King David Academy</h3>
-                <div class="date">Current</div>
-                <p>Studying Information Technology with focus on software development and cybersecurity. Coursework includes advanced programming, web technologies, and computer systems fundamentals.</p>
-            </div>
-            <div class="education-item">
-                <h3>Career Goals</h3>
-                <div class="date">Future Aspirations</div>
-                <p>I aim to become a full-stack software developer with specialization in cybersecurity. I'm actively learning React and PHP to expand my web development skills, while also studying ethical hacking techniques to understand system vulnerabilities and protection methods.</p>
-            </div>
-            <div class="education-item">
-                <h3>Additional Learning</h3>
-                <div class="date">Self-Study & Practice</div>
-                <p>Beyond formal education, I dedicate time to personal projects and online learning platforms to master new technologies. I believe in continuous learning to stay updated in the fast-evolving tech industry.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Gallery -->
-    <section class="projects" id="projects">
-        <div class="container">
-            <h2 class="section-title">My Projects</h2>
-            <div class="projects-container">
-                <div class="project-card">
-                    <div class="project-img" style="background-color: #26a269;">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="project-info">
-                        <h3>C++ Console Applications</h3>
-                        <p>Various console-based applications built with C++ including student management systems, calculators, and data structure implementations.</p>
-                        <div class="project-tags">
-                            <span class="tag">C++</span>
-                            <span class="tag">Data Structures</span>
-                        </div>
-                        <a href="#" class="project-link">View Details <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-img" style="background-color: #1a5fb4;">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <div class="project-info">
-                        <h3>Responsive Web Design</h3>
-                        <p>Modern, mobile-friendly websites built with HTML, CSS, and JavaScript. Focus on clean design and user experience.</p>
-                        <div class="project-tags">
-                            <span class="tag">HTML</span>
-                            <span class="tag">CSS</span>
-                            <span class="tag">JavaScript</span>
-                        </div>
-                        <a href="#" class="project-link">View Details <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-img" style="background-color: #c64600;">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div class="project-info">
-                        <h3>Security Tools</h3>
-                        <p>Basic cybersecurity tools and scripts for educational purposes, focusing on ethical hacking principles and network security.</p>
-                        <div class="project-tags">
-                            <span class="tag">Cybersecurity</span>
-                            <span class="tag">Python</span>
-                            <span class="tag">Networking</span>
-                        </div>
-                        <a href="#" class="project-link">View Details <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <h3>Contact Information</h3>
-                    <p>Feel free to reach out for collaboration, opportunities, or just to connect!</p>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div>
-                            <h4>Location</h4>
-                            <p>Rubavu, Rwanda</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div>
-                            <h4>Phone</h4>
-                            <p>+250 783805137</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                            <h4>Email</h4>
-                            <p>nshutiemmanuel860@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="contact-form">
-                    <h3>Send Message</h3>
-                    <form id="messageForm" action="https://api.web3forms.com/submit" method="POST">
-                    <input type="hidden" name="access_key" value="2203bb96-6263-4816-b26c-9ab99b78d4df">
-                        <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" id="name" class="form-control" placeholder="Your Name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" class="form-control" placeholder="Your Email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="subject">Subject</label>
-                            <input type="text" id="subject" class="form-control" placeholder="Subject" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" class="form-control" placeholder="Your Message" required></textarea>
-                        </div>
-                        <button type="submit" class="btn">Send Message</button>
-                    </form>
-                    <div id="formStatus" style="margin-top: 15px; font-weight: 500;"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <div class="footer-logo">NSHUTI<span>.</span></div>
-                    <p>A passionate IT student and aspiring software developer & ethical hacker from Rubavu, Rwanda.</p>
-                </div>
-                <div class="footer-links">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#education">Education</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-social">
-                    <h3>Connect With Me</h3>
-                    <div class="social-icons">
-                        <a href="https://github.com/nshutiemmanuel860-coder/" target="_blank"><i class="fab fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/nshutiemmanuel/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                        <a href="https://x.com/EmmanuelNs16932" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="https://www.instagram.com/nshuti__wagakira/" target="_blank"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; <span id="currentYear"></span> NSHUTI Emmanuel. All Rights Reserved.</p>
-                <p class="student-note">Made with passion by a King David Academy student still learning web development</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Back to Top Button -->
-    <div class="back-to-top" id="backToTop">
-        <i class="fas fa-arrow-up"></i>
+      </div>
     </div>
 
-    <script src="script.js"></script>
-     <script>
-    (function() {
-        // Ensure form inputs are interactive (fix for possible CSS pointer-events issues)
-        const style = document.createElement('style');
-        style.textContent = `
-            .contact-form input,
-            .contact-form textarea,
-            .contact-form button {
-                pointer-events: auto !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-            }
-        `;
-        document.head.appendChild(style);
+    <div class="learning-section">
+      <div class="container">
+        <h2>Currently Learning</h2>
+        <div class="learning-grid">
+          <div class="learning-card"><div class="learning-icon"><i class="fab fa-react"></i></div><h3>React</h3><p>Building modern user interfaces with React framework</p></div>
+          <div class="learning-card"><div class="learning-icon"><i class="fab fa-php"></i></div><h3>PHP</h3><p>Server-side scripting for web development</p></div>
+          <div class="learning-card"><div class="learning-icon"><i class="fas fa-database"></i></div><h3>MySQL</h3><p>Database management and SQL queries</p></div>
+          <div class="learning-card"><div class="learning-icon"><i class="fas fa-code-branch"></i></div><h3>Git & GitHub</h3><p>Version control and collaboration tools</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        // Form submission handling with Web3Forms
-        const form = document.getElementById('messageForm');
-        const statusDiv = document.getElementById('formStatus');
+  <!-- EDUCATION section (full from education.html) -->
+  <section id="education">
+    <div class="education-hero">
+      <div class="container">
+        <h1>Education & Goals</h1>
+        <p>My academic journey and aspirations in technology and software development</p>
+      </div>
+    </div>
 
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault(); // Stop default browser submission
+    <div class="education-content">
+      <div class="container">
+        <h2>Academic Journey</h2>
+        <div class="education-timeline">
+          <div class="timeline-item">
+            <div class="timeline-icon"><i class="fas fa-graduation-cap"></i></div>
+            <div class="timeline-content">
+              <span class="timeline-date">2022 - Present</span>
+              <h3>King David Academy</h3>
+              <p>Currently studying Information Technology with a focus on software development and cybersecurity. My coursework includes advanced programming concepts, web technologies, computer systems fundamentals, and network security principles.</p>
+              <p>At King David Academy, I'm building a strong foundation in computer science while developing practical skills through hands-on projects and laboratory work.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-icon"><i class="fas fa-laptop-code"></i></div>
+            <div class="timeline-content">
+              <span class="timeline-date">2021 - 2022</span>
+              <h3>Programming Foundations</h3>
+              <p>Started my programming journey with C language, learning fundamental concepts like variables, data types, control structures, functions, and pointers. This foundation helped me understand how software works at a basic level.</p>
+              <p>Progressed to C++ to learn object-oriented programming, which introduced me to classes, objects, inheritance, and polymorphism - essential concepts for modern software development.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-icon"><i class="fas fa-globe"></i></div>
+            <div class="timeline-content">
+              <span class="timeline-date">2023 - Present</span>
+              <h3>Web Development Skills</h3>
+              <p>Expanded my skills to web development, starting with HTML for structure, CSS for styling, and JavaScript for interactivity. Learned responsive design principles to create websites that work on all devices.</p>
+              <p>Currently exploring front-end frameworks and back-end technologies to become a full-stack developer capable of building complete web applications.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            // Show sending state
-            const submitBtn = document.getElementById('submitBtn');
-            const originalText = submitBtn.innerText;
-            submitBtn.innerText = 'Sending...';
-            submitBtn.disabled = true;
-            statusDiv.innerHTML = '';
+    <div class="goals-section">
+      <div class="container">
+        <h2>Career Goals & Aspirations</h2>
+        <div class="goals-grid">
+          <div class="goal-card"><div class="goal-icon"><i class="fas fa-code"></i></div><h3>Software Developer</h3><p>My primary goal is to become a proficient software developer, capable of designing, developing, and maintaining applications that solve real-world problems. I want to specialize in creating efficient and user-friendly software solutions.</p></div>
+          <div class="goal-card"><div class="goal-icon"><i class="fas fa-shield-alt"></i></div><h3>Cybersecurity Specialist</h3><p>I aim to develop expertise in cybersecurity, focusing on ethical hacking and security assessment. Understanding system vulnerabilities and protection methods is crucial for developing secure applications in today's digital landscape.</p></div>
+          <div class="goal-card"><div class="goal-icon"><i class="fas fa-rocket"></i></div><h3>Full-Stack Development</h3><p>Working towards becoming a full-stack developer by mastering both front-end and back-end technologies. This includes learning React for front-end, PHP for back-end, and database management for complete application development.</p></div>
+          <div class="goal-card"><div class="goal-icon"><i class="fas fa-handshake"></i></div><h3>Industry Contribution</h3><p>I aspire to contribute to Rwanda's growing tech industry by applying my skills to local challenges. My goal is to participate in projects that leverage technology for education, business, and community development in Rwanda.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            // Prepare form data
-            const formData = new FormData(form);
-            // Add your Web3Forms access key (get one from https://web3forms.com)
-            formData.append('access_key', '2203bb96-6263-4816-b26c-9ab99b78d4df'); // REPLACE WITH YOUR KEY
-            // Optional: Add redirect URL if you want to redirect after success
-            // formData.append('redirect', 'https://yourdomain.com/thank-you');
+  <!-- PROJECTS section (full from projects.html) -->
+  <section id="projects">
+    <div class="projects-hero">
+      <div class="container">
+        <h1>My Projects</h1>
+        <p>Explore my programming projects and web development work</p>
+      </div>
+    </div>
 
-            try {
-                const response = await fetch('https://api.web3forms.com/submit', {
-                    method: 'POST',
-                    body: formData
-                });
+    <div class="projects-content">
+      <div class="container">
+        <h2>Completed Projects</h2>
+        <div class="projects-grid">
+          <div class="project-card">
+            <div class="project-img"><i class="fas fa-calculator"></i></div>
+            <div class="project-info">
+              <h3>C++ Calculator</h3>
+              <p>A console-based calculator application built with C++ that performs basic arithmetic operations. Features include addition, subtraction, multiplication, division, and error handling for invalid inputs.</p>
+              <div class="project-tags"><span class="tag">C++</span><span class="tag">Console App</span></div>
+              <a href="#" class="project-link">View Code <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-img"><i class="fas fa-user-graduate"></i></div>
+            <div class="project-info">
+              <h3>Student Management System</h3>
+              <p>A C++ application for managing student records. Allows adding, updating, deleting, and searching student information. Uses file handling to store data persistently between sessions.</p>
+              <div class="project-tags"><span class="tag">C++</span><span class="tag">File Handling</span><span class="tag">Data Management</span></div>
+              <a href="#" class="project-link">View Code <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-img"><i class="fas fa-laptop-code"></i></div>
+            <div class="project-info">
+              <h3>Portfolio Website</h3>
+              <p>This responsive portfolio website built with HTML, CSS, and JavaScript. Features dark/light mode, smooth animations, and mobile-friendly design. Showcases my skills and projects effectively.</p>
+              <div class="project-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Responsive</span></div>
+              <a href="#home" class="project-link">View Live <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-img"><i class="fas fa-shield-alt"></i></div>
+            <div class="project-info">
+              <h3>Password Strength Checker</h3>
+              <p>A JavaScript tool that evaluates password strength based on length, character variety, and common patterns. Provides feedback to help users create stronger passwords for better security.</p>
+              <div class="project-tags"><span class="tag">JavaScript</span><span class="tag">Security</span><span class="tag">Web Tool</span></div>
+              <a href="#" class="project-link">Try Tool <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-                const data = await response.json();
+    <div class="coming-soon">
+      <div class="container">
+        <h2>Projects in Progress</h2>
+        <div class="coming-soon-grid">
+          <div class="coming-card"><div class="coming-icon"><i class="fas fa-shopping-cart"></i></div><h3>E-commerce Website</h3><p>A full-featured online store with product catalog, shopping cart, and checkout system using React and PHP</p></div>
+          <div class="coming-card"><div class="coming-icon"><i class="fas fa-tasks"></i></div><h3>Task Manager App</h3><p>A web-based task management application with user authentication, deadlines, and progress tracking</p></div>
+          <div class="coming-card"><div class="coming-icon"><i class="fas fa-network-wired"></i></div><h3>Network Scanner</h3><p>A Python-based network scanning tool for identifying devices and open ports on local networks</p></div>
+          <div class="coming-card"><div class="coming-icon"><i class="fas fa-blog"></i></div><h3>Personal Blog</h3><p>A blogging platform with content management system, comments, and user profiles</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-                if (data.success) {
-                    statusDiv.innerHTML = '<span style="color: green;">✓ Message sent successfully!</span>';
-                    form.reset(); // Clear the form
-                } else {
-                    statusDiv.innerHTML = '<span style="color: red;">✗ Error: ' + (data.message || 'Something went wrong.') + '</span>';
-                }
-            } catch (error) {
-                statusDiv.innerHTML = '<span style="color: red;">✗ Network error. Please try again.</span>';
-            } finally {
-                submitBtn.innerText = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-    })();
-</script>
+  <!-- CONTACT section (full from contact.html) -->
+  <section id="contact">
+    <div class="contact-hero">
+      <div class="container">
+        <h1>Get In Touch</h1>
+        <p>Contact me for opportunities, collaborations, or just to connect</p>
+      </div>
+    </div>
+
+    <div class="contact-content">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <h2>Contact Information</h2>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+              <div class="contact-details"><h3>Location</h3><p>Rubavu, Rwanda</p><p>I'm based in Rubavu district, Rwanda's beautiful lakeside region</p></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fas fa-phone"></i></div>
+              <div class="contact-details"><h3>Phone Number</h3><p>+250 783805137</p><p>Available for calls and WhatsApp messages</p></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+              <div class="contact-details"><h3>Email Address</h3><p>nshutiemmanuel860@gmail.com</p><p>I check my email regularly and respond within 24 hours</p></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon"><i class="fas fa-school"></i></div>
+              <div class="contact-details"><h3>Education</h3><p>King David Academy at Kigali city, Rwanda</p><p>Currently studying Information Technology with focus on Software development and Programming</p></div>
+            </div>
+          </div>
+          <div class="contact-form">
+            <h2>Send Message</h2>
+            <form id="messageForm" action="https://formsubmit.co/nshutiemmanuel860@email.com" method="POST">
+              <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" name="name" class="form-control" placeholder="Your Name" required></div>
+              <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" class="form-control" placeholder="Your Email" required></div>
+              <div class="form-group"><label for="subject">Subject</label><input type="text" id="subject" name="subject" class="form-control" placeholder="Message Subject" required></div>
+              <div class="form-group"><label for="message">Your Message</label><textarea id="message" name="message" class="form-control" placeholder="Type your message here..." required></textarea></div>
+              <button type="submit" class="btn" style="width: 100%;">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-section">
+      <div class="container">
+        <h2>My Location</h2>
+        <div class="map-container">
+         <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d127618.61864239487!2d29.269553532834845!3d-1.690490315659264!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dd050962a31753%3A0xa69ced53ff65c009!2sGisenyi!5e0!3m2!1sen!2srw!4v1771698555360!5m2!1sen!2srw" width="1000" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- footer (common from home) -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about">
+          <div class="footer-logo">NSHUTI<span>.</span></div>
+          <p class="footer-text">IT Student at King David Academy passionate about software development and cybersecurity</p>
+        </div>
+        <div class="footer-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#home" class="footer-link">Home</a></li>
+            <li><a href="#about" class="footer-link">About</a></li>
+            <li><a href="#education" class="footer-link">Education</a></li>
+            <li><a href="#projects" class="footer-link">Projects</a></li>
+            <li><a href="#contact" class="footer-link">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-social">
+          <h3>Connect</h3>
+          <div class="social-icons">
+            <a href="https://github.com/nshutiemmanuel860-coder/" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/feed/" target="_blank" class="social-icon"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.instagram.com/nshuti__wagakira/" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="mailto:nshutiemmanuel860@gmail.com" class="social-icon"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="copyright">
+        <p> &copy; <span id="currentYear"></span> NSHUTI Emmanuel. All Rights Reserved.</p>
+        <p class="footer-contact">Phone: +250 783805137 | Location: Rubavu, Rwanda</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
