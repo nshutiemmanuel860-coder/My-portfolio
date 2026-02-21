@@ -263,7 +263,8 @@
                 </div>
                 <div class="contact-form">
                     <h3>Send Message</h3>
-                    <form id="messageForm" action="https:///api.web3forms.com/submit" method="POST">
+                    <form id="messageForm" action="https://api.web3forms.com/submit" method="POST">
+                    <input type="hidden" name="access_key" value="2203bb96-6263-4816-b26c-9ab99b78d4df">
                         <div class="form-group">
                             <label for="name">Full Name</label>
                             <input type="text" id="name" class="form-control" placeholder="Your Name" required>
@@ -282,6 +283,7 @@
                         </div>
                         <button type="submit" class="btn">Send Message</button>
                     </form>
+                    <div id="formStatus" style="margin-top: 15px; font-weight: 500;"></div>
                 </div>
             </div>
         </div>
@@ -317,7 +319,7 @@
             </div>
             <div class="copyright">
                 <p>&copy; <span id="currentYear"></span> NSHUTI Emmanuel. All Rights Reserved.</p>
-                <p class="student-note">Made with ❤️ by a King David Academy student still learning web development</p>
+                <p class="student-note">Made with passion by a King David Academy student still learning web development</p>
             </div>
         </div>
     </footer>
@@ -328,8 +330,64 @@
     </div>
 
     <script src="script.js"></script>
+     <script>
+    (function() {
+        // Ensure form inputs are interactive (fix for possible CSS pointer-events issues)
+        const style = document.createElement('style');
+        style.textContent = `
+            .contact-form input,
+            .contact-form textarea,
+            .contact-form button {
+                pointer-events: auto !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Form submission handling with Web3Forms
+        const form = document.getElementById('messageForm');
+        const statusDiv = document.getElementById('formStatus');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault(); // Stop default browser submission
+
+            // Show sending state
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = 'Sending...';
+            submitBtn.disabled = true;
+            statusDiv.innerHTML = '';
+
+            // Prepare form data
+            const formData = new FormData(form);
+            // Add your Web3Forms access key (get one from https://web3forms.com)
+            formData.append('access_key', '2203bb96-6263-4816-b26c-9ab99b78d4df'); // REPLACE WITH YOUR KEY
+            // Optional: Add redirect URL if you want to redirect after success
+            // formData.append('redirect', 'https://yourdomain.com/thank-you');
+
+            try {
+                const response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    statusDiv.innerHTML = '<span style="color: green;">✓ Message sent successfully!</span>';
+                    form.reset(); // Clear the form
+                } else {
+                    statusDiv.innerHTML = '<span style="color: red;">✗ Error: ' + (data.message || 'Something went wrong.') + '</span>';
+                }
+            } catch (error) {
+                statusDiv.innerHTML = '<span style="color: red;">✗ Network error. Please try again.</span>';
+            } finally {
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    })();
+</script>
 </body>
-
 </html>
-
-
